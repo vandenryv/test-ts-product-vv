@@ -1,4 +1,4 @@
-import type { Review, ReviewToAdd } from '#src/domain/models/Review.ts';
+import type { Review } from '#src/domain/models/Review.ts';
 import type { Pageable } from '#src/common/classes/Pageable.ts';
 
 export interface ReviewAdapterOutPort {

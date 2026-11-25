@@ -40,7 +40,6 @@ void test('review adapter delegates and connects existing relations', async () =
   const include = { author: true };
   assert.deepEqual(await adapter.findOneById('review'), review);
   assert.deepEqual(await adapter.getPage({ page: 2, size: 10 }), [review]);
-  assert.deepEqual(await adapter.addOne(review), review);
   assert.deepEqual(calls, [
     { where: { id: 'review' }, include },
     { skip: 10, take: 10, include },

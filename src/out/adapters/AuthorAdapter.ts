@@ -1,6 +1,6 @@
 import type { Pageable } from '#src/common/classes/Pageable.ts';
 import type { AuthorAdapterOutPort } from '#src/domain/port/out/AuthorAdapterOutPort.ts';
-import type { Author, AuthorToAdd } from '#src/domain/models/Author.ts';
+import type { Author } from '#src/domain/models/Author.ts';
 import type { PrismaClient } from '#src/generated/prisma/client.ts';
 import AuthorRepo from '#src/out/repos/AuthorRepo.ts';
 import { NotFoundError } from '#src/common/classes/route-errors.ts';
