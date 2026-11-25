@@ -6,3 +6,5 @@ export interface Author {
   lastName: string;
   type: string;
 }
+
+export type AuthorToAdd = Omit<Author, 'id'>;

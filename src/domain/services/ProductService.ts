@@ -1,6 +1,6 @@
 import type { Pageable } from '#src/common/classes/Pageable.ts';
 import type ProductAdapterInPort from '#src/domain/port/in/ProductAdapterInPort.ts';
-import type { Product } from '#src/domain/types/Product.ts';
+import type { Product, ProductToAdd } from '#src/domain/models/Product.ts';
 
 export class ProductService implements ProductAdapterInPort {
   productRepo: ProductAdapterInPort;
@@ -9,7 +9,7 @@ export class ProductService implements ProductAdapterInPort {
     this.productRepo = productAdapterPortOut;
   }
 
-  addOne(product: Product): Promise<Product> {
+  addOne(product: ProductToAdd): Promise<Product> {
     return this.productRepo.addOne(product);
   }
 

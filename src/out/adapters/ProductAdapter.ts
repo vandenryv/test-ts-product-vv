@@ -1,21 +1,19 @@
 import type { Pageable } from '#src/common/classes/Pageable.ts';
 import { NotFoundError } from '#src/common/classes/route-errors.ts';
 import type ProductAdapterOutPort from '#src/domain/port/out/ProductAdapterOutPort.ts';
-import type { Product } from '#src/domain/types/Product.ts';
+import type { Product, ProductToAdd } from '#src/domain/models/Product.ts';
 import type { PrismaClient } from '#src/generated/prisma/client.ts';
-import ProductRepo from '#src/out/repos/ProductRepo.ts';
+import ProductRepo, { type ProductWithReviews } from '#src/out/repos/ProductRepo.ts';
 
-type StoredProduct = NonNullable<Awaited<ReturnType<ReturnType<typeof ProductRepo>['getOne']>>>;
-
-function toProduct(product: StoredProduct): Product {
+function toProduct(product: ProductWithReviews): Product {
   return { ...product, price: BigInt(product.price.toString()) };
 }
 
 export class ProductAdapter implements ProductAdapterOutPort {
-  private readonly productRepo: ReturnType<typeof ProductRepo>;
+  private readonly productRepo: ProductRepo;
 
   constructor(prisma: PrismaClient) {
-    this.productRepo = ProductRepo(prisma);
+    this.productRepo = new ProductRepo(prisma);
   }
 
   async findOneById(id: string): Promise<Product> {
@@ -28,7 +26,7 @@ export class ProductAdapter implements ProductAdapterOutPort {
     return (await this.productRepo.getPage(pageable)).map(toProduct);
   }
 
-  async addOne(product: Product): Promise<Product> {
+  async addOne(product: ProductToAdd): Promise<Product> {
     const { reviews, price, ...data } = product;
     return toProduct(await this.productRepo.addOne({
       ...data,

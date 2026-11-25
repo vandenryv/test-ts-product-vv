@@ -4,14 +4,6 @@ import HttpStatusCodes from '#src/common/constants/HttpStatusCodes.ts';
 import type ReviewAdapterInPort from '#src/domain/port/in/ReviewAdapterInPort.ts';
 import { queryStringExtractor } from '#src/in/routers/util.ts';
 
-
-
-
-
-
-
-
-
 export const basePath = '/reviews';
 
 export function routerFactory(reviewAdapter: ReviewAdapterInPort): Router {

@@ -1,6 +1,6 @@
 import type { Pageable } from '#src/common/classes/Pageable.ts';
 import type { AuthorAdapterInPort } from '#src/domain/port/in/AuthorAdapterInPort.ts';
-import type { Author } from '#src/domain/types/Author.ts';
+import type { Author, AuthorToAdd } from '#src/domain/models/Author.ts';
 
 export class AuthorService implements AuthorAdapterInPort{
 
@@ -10,7 +10,7 @@ export class AuthorService implements AuthorAdapterInPort{
     this.authorRepo = authorAdapterPortOut;
   }
 
-  addOne(author: Author): Promise<Author> {
+  addOne(author: AuthorToAdd): Promise<Author> {
     return this.authorRepo.addOne(author);
   }
 

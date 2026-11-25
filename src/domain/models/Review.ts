@@ -1,5 +1,5 @@
 
-import type { Author } from './Author.ts';
+import type { Author, AuthorToAdd } from './Author.ts';
 
 export interface Review {
   id: string;
@@ -10,3 +10,5 @@ export interface Review {
   authorId: string;
   author: Author;
 }
+
+export type ReviewToAdd = Omit<Review, 'author'> & { author: AuthorToAdd };
