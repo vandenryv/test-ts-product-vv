@@ -24,6 +24,8 @@ void test('product and review IDs must be UUIDv7 strings', async () => {
   const reviews: ReviewAdapterInPort = {
     findOneById: (id) => { calls.push(id); return Promise.resolve(review); },
     getPage: () => Promise.resolve([]),
+    findByProductId: () => { throw new Error('unexpected call'); },
+    getTotalNumberOfReviews: () => { throw new Error('unexpected call'); },
   };
   const app = express().use(productRouter(products)).use(reviewRouter(reviews));
   const validId = '018f47a2-7b00-7000-8000-000000000001';

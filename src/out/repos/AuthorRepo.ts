@@ -20,8 +20,4 @@ export default class AuthorRepo {
       take: pageable.size,
     });
   }
-
-  async addOne(data: Prisma.AuthorCreateInput): Promise<StoredAuthor> {
-    return this.prisma.author.create({ data });
-  }
 }

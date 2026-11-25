@@ -22,4 +22,11 @@ export class ReviewAdapter implements ReviewAdapterOutPort {
     return this.reviewRepo.getPage(pageable);
   }
 
+  findByProductId(productId: string): Promise<Review[]> {
+    return this.reviewRepo.findByProductId(productId);
+  }
+
+  getTotalNumberOfReviews(): Promise<number> {
+    return this.reviewRepo.getTotalNumberOfReviews();
+  }
 }

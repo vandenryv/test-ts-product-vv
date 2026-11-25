@@ -17,4 +17,12 @@ export class ReviewService implements ReviewAdapterInPort {
   getPage(pageable: Pageable): Promise<Review[]> {
     return this.reviewRepo.getPage(pageable);
   }
+
+  findByProductId(productId: string): Promise<Review[]> {
+    return this.reviewRepo.findByProductId(productId);
+  }
+
+  getTotalNumberOfReviews(): Promise<number> {
+    return this.reviewRepo.getTotalNumberOfReviews();
+  }
 }

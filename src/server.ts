@@ -45,8 +45,12 @@ const {
   router, fileIntegration
 } = buildDependencyTree(prismaClient);
 
-await fileIntegration.integrateFiles();
+const dataBaseHasBeenSeeded = await fileIntegration.integrateFiles();
 
+if(dataBaseHasBeenSeeded){
+  logger.info('Database seeded correctly');
+  process.exit(0);
+}
 // Add APIs, must be after middleware
 app.use('/', router);
 

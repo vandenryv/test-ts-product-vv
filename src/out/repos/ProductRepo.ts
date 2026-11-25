@@ -3,6 +3,9 @@ import type { Prisma, PrismaClient } from '#src/generated/prisma/client.ts';
 
 export type ProductWithReviews = Prisma.ProductGetPayload<{ include: { reviews: { include: { author: true } } } }>;
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export type ProductBare = Prisma.ProductGetPayload<{ }>;
+
 export default class ProductRepo {
   private readonly prisma: PrismaClient;
 
@@ -14,11 +17,10 @@ export default class ProductRepo {
     return this.prisma.product.findUnique({ where: { id }, include: { reviews: { include: { author: true } } } });
   }
 
-  async getPage(pageable: Pageable): Promise<ProductWithReviews[]> {
+  async getPage(pageable: Pageable): Promise<ProductBare[]> {
     return this.prisma.product.findMany({
       skip: (pageable.page - 1)  * pageable.size,
-      take: pageable.size,
-      include: { reviews: { include: { author: true } } },
+      take: pageable.size
     });
   }
 

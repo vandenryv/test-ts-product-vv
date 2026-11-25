@@ -1,14 +1,14 @@
 info:
-  name: Get product
+  name: Get author
   type: http
-  seq: 2
+  seq: 5
 
 http:
   method: GET
-  url: "{{host}}/products/:id"
+  url: "{{host}}/authors/:id"
   params:
     - name: id
-      value: 01a21334-eaaf-73c8-a0d3-fe1789c7a813
+      value: 01a2139b-deca-70d8-be96-3c4bf2a34ab9
       type: path
 
 settings:

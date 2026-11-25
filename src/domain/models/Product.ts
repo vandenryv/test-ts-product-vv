@@ -13,3 +13,5 @@ export interface Product {
 }
 
 export type ProductToAdd = Omit<Product, 'id' | 'reviews'> & { reviews: ReviewToAdd[] };
+
+export type ProductBare = Omit<Product, 'reviews'>;

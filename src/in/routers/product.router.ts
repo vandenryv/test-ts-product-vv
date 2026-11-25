@@ -33,7 +33,7 @@ export function routerFactory(productAdapter: ProductAdapterInPort): Router {
     res.type('json').send(JSON.stringify( {count: count }));
   })
 
-  router.get(basePath + "/most_apreciated", async (req, res) => {
+  router.get(basePath + "/mostApreciated", async (req, res) => {
     const products = await productAdapter.getMostAppreciatedProducts();
     res.type('json').send(JSON.stringify( products ));
   })

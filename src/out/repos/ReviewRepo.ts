@@ -22,7 +22,11 @@ export default class ReviewRepo {
     });
   }
 
-  addOne(data: Prisma.ReviewCreateInput): Promise<ReviewWithAuthor> {
-    return this.prisma.review.create({ data, include: { author: true } });
+  findByProductId(productId: string): Promise<ReviewWithAuthor[]> {
+    return this.prisma.review.findMany({ where: { productId }, include: { author: true } });
+  }
+
+  getTotalNumberOfReviews(): Promise<number> {
+    return this.prisma.review.count();
   }
 }

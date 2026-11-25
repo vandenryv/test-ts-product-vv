@@ -1,11 +1,11 @@
 info:
-  name: Most appreciated products
+  name: Count products
   type: http
-  seq: 8
+  seq: 5
 
 http:
   method: GET
-  url: "{{host}}/products/most_apreciated"
+  url: "{{host}}/products/count"
 
 settings:
   encodeUrl: true

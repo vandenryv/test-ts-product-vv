@@ -1,15 +1,11 @@
 info:
-  name: Get review
+  name: Most appreciated products
   type: http
-  seq: 6
+  seq: 5
 
 http:
   method: GET
-  url: "{{host}}/reviews/:id"
-  params:
-    - name: id
-      value: 01a21334-eaaf-73c8-a0d3-fe1789c7a813
-      type: path
+  url: "{{host}}/products/mostApreciated"
 
 settings:
   encodeUrl: true

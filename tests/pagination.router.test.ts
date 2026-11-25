@@ -20,6 +20,8 @@ void test('product and review pagination matches author pagination', async () =>
   const reviews: ReviewAdapterInPort = {
     getPage: (pageable) => { calls.push(pageable); return Promise.resolve([]); },
     findOneById: () => { throw new Error('unexpected call'); },
+    findByProductId: () => { throw new Error('unexpected call'); },
+    getTotalNumberOfReviews: () => { throw new Error('unexpected call'); },
   };
   const app = express().use(productRouter(products)).use(reviewRouter(reviews));
 

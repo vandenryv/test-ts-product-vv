@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "install:clean": "node -e \"fs.rmSync('node_modules', { recursive: true, force: true }); fs.rmSync('package-lock.json', { force: true })\" && npm i",
-    "dev": "npm run typecheck && node --env-file=config/.env.development --watch src/main.ts",
+    "dev": "npm run typecheck && node --env-file=config/.env.development ${DEV_WATCH_FLAG---watch} src/main.ts",
     "lint": "eslint .",
     "start": "node --env-file-if-exists=config/.env.production src/main.ts",
     "test": "node --env-file=config/.env.test --test --test-concurrency=1",

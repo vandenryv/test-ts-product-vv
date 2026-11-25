@@ -8,7 +8,6 @@ import type { AuthorAdapterInPort } from '#src/domain/port/in/AuthorAdapterInPor
 import type { ProductAdapterInPort } from '#src/domain/port/in/ProductAdapterInPort.ts';
 import type { ReviewAdapterInPort } from '#src/domain/port/in/ReviewAdapterInPort.ts';
 import apiRouter from '#src/in/routers/api.router.ts';
-import type { Product } from '#src/domain/models/Product.ts';
 
 void test('API routes delegate to their respective adapters', async () => {
   const authorId = '018f47a2-7b00-7000-8000-000000000001';
@@ -27,14 +26,16 @@ void test('API routes delegate to their respective adapters', async () => {
   const reviews: ReviewAdapterInPort = {
     findOneById: (id) => { calls.push(['review', id]); return Promise.resolve(review); },
     getPage: (pageable) => { calls.push(['reviews', pageable]); return Promise.resolve([review]); },
+    findByProductId: (id) => { calls.push(['reviewsByProduct', id]); return Promise.resolve([review]); },
+    getTotalNumberOfReviews: () => { calls.push(['reviewCount']); return Promise.resolve(2); },
   };
   const products: ProductAdapterInPort = {
     findOneById: (id) => { calls.push(['product', id]); return Promise.resolve(product); },
     getPage: (pageable) => { calls.push(['products', pageable]); return Promise.resolve([product]); },
     addOne: () => { throw new Error('unexpected call'); },
-    getTotalNumberOfProducts: () => { throw new Error('unexpected call'); },
-    getMostAppreciatedProducts: () => { throw new Error('unexpected call'); },
-    getProductWithLowestRating: () => { throw new Error('unexpected call'); },
+    getTotalNumberOfProducts: () => { calls.push(['productCount']); return Promise.resolve(3); },
+    getMostAppreciatedProducts: () => { calls.push(['mostAppreciated']); return Promise.resolve([product]); },
+    getProductWithLowestRating: () => { calls.push(['worstRated']); return Promise.resolve([product]); },
   };
 
   const app = express().use(apiRouter(products, authors, reviews));
@@ -53,4 +54,14 @@ void test('API routes delegate to their respective adapters', async () => {
   assert.deepEqual((await request(app).get('/reviews?page=1&size=10').expect(200)).body, [{ ...review, date: review.date.toISOString() }]);
   assert.deepEqual((await request(app).get('/products?page=1&size=10').expect(200)).body, [{ ...product, price: '123' }]);
   assert.deepEqual(calls.slice(3), [['authors', pageable], ['reviews', pageable], ['products', pageable]]);
+
+  assert.deepEqual((await request(app).get('/products/count').expect(200)).body, { count: 3 });
+  assert.deepEqual((await request(app).get('/products/mostApreciated').expect(200)).body, [{ ...product, price: '123' }]);
+  assert.deepEqual((await request(app).get('/products/worstRated').expect(200)).body, [{ ...product, price: '123' }]);
+  assert.deepEqual((await request(app).get('/reviews/count').expect(200)).body, { count: 2 });
+  assert.deepEqual((await request(app).get(`/reviews/productId/${productId}`).expect(200)).body, [{ ...review, date: review.date.toISOString() }]);
+  assert.deepEqual((await request(app).get('/reviews/productId/invalid').expect(400)).body, { error: 'productId should be a uuidv7 string' });
+  assert.deepEqual(calls.slice(6), [
+    ['productCount'], ['mostAppreciated'], ['worstRated'], ['reviewCount'], ['reviewsByProduct', productId],
+  ]);
 });

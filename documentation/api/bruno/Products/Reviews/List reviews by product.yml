@@ -1,0 +1,19 @@
+info:
+  name: List reviews by product
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: "{{host}}/reviews/productId/:productId"
+  params:
+    - name: productId
+      value: 01a2139b-dec4-715a-96c9-8e6c6ea3cf64
+      type: path
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: true

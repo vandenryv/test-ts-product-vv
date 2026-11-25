@@ -14,10 +14,10 @@ export class DataIntegrationFromFile {
     this.productPort = productPort;
   }
 
-  async integrateFiles(): Promise<void> {
+  async integrateFiles(): Promise<boolean> {
     const fileToRead = this.fileNameToIntegrate();
     if (!fileToRead){
-      return;
+      return false;
     }
       const products = JSON.parse(await readFile(join(this.directory, fileToRead), 'utf8')) as ProductToAdd[];
       for (const product of products) {
@@ -31,7 +31,7 @@ export class DataIntegrationFromFile {
           }
         }
       }
-
+    return true;
   }
 
   private fileNameToIntegrate(): string | undefined {

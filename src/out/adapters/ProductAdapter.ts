@@ -1,7 +1,7 @@
 import type { Pageable } from '#src/common/classes/Pageable.ts';
 import { NotFoundError } from '#src/common/classes/route-errors.ts';
 import type { ProductAdapterOutPort } from '#src/domain/port/out/ProductAdapterOutPort.ts';
-import type { Product, ProductToAdd } from '#src/domain/models/Product.ts';
+import type { Product, ProductBare, ProductToAdd } from '#src/domain/models/Product.ts';
 import type { PrismaClient } from '#src/generated/prisma/client.ts';
 import ProductRepo from '#src/out/repos/ProductRepo.ts';
 import { ProductAlreadyExistError } from '#src/common/classes/Errors.ts';
@@ -29,7 +29,7 @@ export class ProductAdapter implements ProductAdapterOutPort {
     return product;
   }
 
-  async getPage(pageable: Pageable): Promise<Product[]> {
+  async getPage(pageable: Pageable): Promise<ProductBare[]> {
     return (await this.productRepo.getPage(pageable));
   }
 

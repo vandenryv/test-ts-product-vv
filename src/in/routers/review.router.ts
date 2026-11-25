@@ -28,6 +28,29 @@ export function routerFactory(reviewAdapter: ReviewAdapterInPort): Router {
     res.type('json').send(JSON.stringify( reviews ));
   });
 
+  router.get(basePath + "/productId/:productId", async (req,res) => {
+    const id = queryStringExtractor(req.params.productId);
+    const safeParse = idSchema.safeParse(id);
+    if (!safeParse.success) {
+      res
+        .type('json')
+        .status(HttpStatusCodes.BAD_REQUEST)
+        .send({ error: 'productId should be a uuidv7 string' });
+      return;
+    }
+    const reviews = await reviewAdapter.findByProductId(safeParse.data);
+    res.type('json').send(JSON.stringify( reviews ));
+  })
+
+
+  router.get(basePath + "/count", async (req, res) => {
+    const count = await reviewAdapter.getTotalNumberOfReviews();
+    res.type('json').send(JSON.stringify( {count: count }));
+  })
+
+  /*
+  Keep the /:id last, or it will match instead every path above
+   */
   router.get(basePath + '/:id', async (req, res) => {
     const id = queryStringExtractor(req.params.id);
     const safeParse = idSchema.safeParse(id);

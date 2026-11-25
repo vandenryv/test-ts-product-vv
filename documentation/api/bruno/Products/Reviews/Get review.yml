@@ -1,14 +1,14 @@
 info:
-  name: Get author
+  name: Get review
   type: http
   seq: 4
 
 http:
   method: GET
-  url: "{{host}}/authors/:id"
+  url: "{{host}}/reviews/:id"
   params:
     - name: id
-      value: 01a21334-eaaf-73c8-a0d3-fe1789c7a813
+      value: 01a2139b-ded9-7253-8a76-174dad93c5dd
       type: path
 
 settings:
