@@ -10,6 +10,18 @@ export class ProductService implements ProductAdapterInPort {
     this.productRepo = productPortOut;
   }
 
+  getTotalNumberOfProducts(): Promise<number> {
+    return this.productRepo.getTotalNumberOfProducts();
+  }
+
+  getMostAppreciatedProducts() : Promise<Product[]>{
+    return this.productRepo.getMostAppreciatedProducts();
+  }
+
+  getProductWithLowestRating():Promise<Product[]> {
+    return this.productRepo.getProductWithLowestRating();
+  }
+
   addOne(product: ProductToAdd): Promise<Product> {
     return this.productRepo.addOne(product);
   }

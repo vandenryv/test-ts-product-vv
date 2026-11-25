@@ -4,5 +4,4 @@ import type { Pageable } from '#src/common/classes/Pageable.ts';
 export interface ReviewAdapterOutPort {
   findOneById: (id: string) => Promise<Review>;
   getPage:  (pageable: Pageable)  => Promise<Review[]>;
-  addOne: (data: ReviewToAdd) => Promise<Review>;
 }

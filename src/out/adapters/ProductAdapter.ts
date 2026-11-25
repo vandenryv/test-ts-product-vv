@@ -13,6 +13,16 @@ export class ProductAdapter implements ProductAdapterOutPort {
     this.productRepo = new ProductRepo(prisma);
   }
 
+  getTotalNumberOfProducts(): Promise<number> {
+    return this.productRepo.count();
+  }
+  getMostAppreciatedProducts() : Promise<Product[]>{
+    return this.productRepo.findTopPositive(5);
+  }
+  getProductWithLowestRating(): Promise<Product[]> {
+    return this.productRepo.findLowestRated(5);
+  }
+
   async findOneById(id: string): Promise<Product> {
     const product = await this.productRepo.getOne(id);
     if (!product) throw new NotFoundError(`Product not found: ${id}`);

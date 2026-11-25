@@ -10,10 +10,6 @@ export class AuthorService implements AuthorAdapterInPort{
     this.authorRepo = authorPortOut;
   }
 
-  addOne(author: AuthorToAdd): Promise<Author> {
-    return this.authorRepo.addOne(author);
-  }
-
   findOneById(id: string): Promise<Author> {
     return this.authorRepo.findOneById(id);
   }

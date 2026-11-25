@@ -1,7 +1,7 @@
 import type { Pageable } from '#src/common/classes/Pageable.ts';
 import { NotFoundError } from '#src/common/classes/route-errors.ts';
-import type ReviewAdapterOutPort from '#src/domain/port/out/ReviewAdapterOutPort.ts';
-import type { Review, ReviewToAdd } from '#src/domain/models/Review.ts';
+import type { ReviewAdapterOutPort } from '#src/domain/port/out/ReviewAdapterOutPort.ts';
+import type { Review } from '#src/domain/models/Review.ts';
 import type { PrismaClient } from '#src/generated/prisma/client.ts';
 import ReviewRepo from '#src/out/repos/ReviewRepo.ts';
 
@@ -22,12 +22,4 @@ export class ReviewAdapter implements ReviewAdapterOutPort {
     return this.reviewRepo.getPage(pageable);
   }
 
-  addOne(review: ReviewToAdd): Promise<Review> {
-    const { authorId, productId, author, ...data } = review;
-    return this.reviewRepo.addOne({
-      ...data,
-      author: { connect: { id: authorId } },
-      product: { connect: { id: productId } },
-    });
-  }
 }

@@ -30,4 +30,55 @@ export default class ProductRepo {
     return this.prisma.product.findUnique({ where: { reference }, include: { reviews: { include: { author: true } } } });
   }
 
+  async count(): Promise<number> {
+    return this.prisma.product.count();
+  }
+
+  async findTopPositive(limit :number ): Promise<ProductWithReviews[]> {
+    const counts = await this.prisma.review.groupBy({
+      by: ['productId'],
+      where: { notation: { gt: 3 } },
+      _count: { productId: true },
+      orderBy: [{ _count: { productId: 'desc' } }, { productId: 'asc' }],
+      take: limit,
+    });
+
+    const topProductIds = counts.map(({ productId }) => productId);
+
+    const products = await this.prisma.product.findMany({
+      where: { id: { in: topProductIds} },
+      include: { reviews: { include: { author: true } } },
+    });
+
+    const productMap = new Map(products.map(product => [product.id, product]));
+    const productInOrder = counts
+      .map(({ productId }) => productMap.get(productId))
+      .filter(value => value !== undefined);
+    return productInOrder;
+  }
+
+  async findLowestRated(limit: number): Promise<ProductWithReviews[]> {
+    const ratings = await this.prisma.review.groupBy({
+      by: ['productId'],
+      _avg: { notation: true },
+      orderBy: [{ _avg: { notation: 'asc' } }, { productId: 'asc' }],
+      take: limit,
+    });
+
+    const worstProductIds = ratings.map(({ productId }) => productId)
+
+    const products = await this.prisma.product.findMany({
+      where: { id: { in:worstProductIds } },
+      include: { reviews: { include: { author: true } } },
+    });
+
+    const productMap = new Map(products.map(product => [product.id, product]));
+
+    const productInOrder = ratings
+      .map(({ productId }) => productMap.get(productId))
+      .filter(value => value !== undefined);
+    return productInOrder;
+  }
+
+
 }

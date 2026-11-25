@@ -25,7 +25,7 @@ export function routerFactory(reviewAdapter: ReviewAdapterInPort): Router {
     }
     const pageable = safeParse.data;
     const reviews = await reviewAdapter.getPage(pageable);
-    res.type('json').send(JSON.stringify({ reviews }, bigintReplacer));
+    res.type('json').send(JSON.stringify( reviews ));
   });
 
   router.get(basePath + '/:id', async (req, res) => {
@@ -39,12 +39,8 @@ export function routerFactory(reviewAdapter: ReviewAdapterInPort): Router {
       return;
     }
     const review = await reviewAdapter.findOneById(safeParse.data);
-    res.type('json').send(JSON.stringify({ review }, bigintReplacer));
+    res.type('json').send(JSON.stringify(review ));
   });
 
   return router;
-}
-
-function bigintReplacer(_key: string, value: unknown): unknown {
-  return typeof value === 'bigint' ? value.toString() : value;
 }

@@ -5,4 +5,7 @@ export interface ProductAdapterOutPort {
   findOneById: (id: string) => Promise<Product>;
   getPage:  (pageable: Pageable)  => Promise<Product[]>;
   addOne: (data: ProductToAdd) => Promise<Product>;
+  getTotalNumberOfProducts: () => Promise<number>;
+  getMostAppreciatedProducts: () => Promise<Product[]>;
+  getProductWithLowestRating: () => Promise<Product[]>;
 }

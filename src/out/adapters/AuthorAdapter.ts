@@ -21,8 +21,4 @@ export class AuthorAdapter implements AuthorAdapterOutPort {
   getPage(pageable: Pageable): Promise<Author[]> {
     return this.authorRepo.getPage(pageable);
   }
-
-  addOne(author: AuthorToAdd): Promise<Author> {
-    return this.authorRepo.addOne({ ...author });
-  }
 }

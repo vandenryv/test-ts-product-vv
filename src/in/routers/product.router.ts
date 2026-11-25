@@ -25,8 +25,23 @@ export function routerFactory(productAdapter: ProductAdapterInPort): Router {
     }
     const pageable = safeParse.data;
     const products = await productAdapter.getPage(pageable);
-    res.type('json').send(JSON.stringify({ products }, bigintReplacer));
+    res.type('json').send(JSON.stringify( products ));
   });
+
+  router.get(basePath + "/count", async (req, res) => {
+    const count = await productAdapter.getTotalNumberOfProducts();
+    res.type('json').send(JSON.stringify( {count: count }));
+  })
+
+  router.get(basePath + "/most_apreciated", async (req, res) => {
+    const products = await productAdapter.getMostAppreciatedProducts();
+    res.type('json').send(JSON.stringify( products ));
+  })
+
+  router.get(basePath + "/worstRated",async (req,res) =>{
+    const products = await productAdapter.getProductWithLowestRating();
+    res.type('json').send(JSON.stringify( products ));
+  })
 
   router.get(basePath + '/:id', async (req, res) => {
     const id = queryStringExtractor(req.params.id);
@@ -39,12 +54,8 @@ export function routerFactory(productAdapter: ProductAdapterInPort): Router {
       return;
     }
     const product = await productAdapter.findOneById(safeParse.data);
-    res.type('json').send(JSON.stringify({ product }, bigintReplacer));
+    res.type('json').send(JSON.stringify( product ));
   });
 
   return router;
-}
-
-function bigintReplacer(_key: string, value: unknown): unknown {
-  return typeof value === 'bigint' ? value.toString() : value;
 }
