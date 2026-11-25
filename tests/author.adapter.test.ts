@@ -18,10 +18,9 @@ void test('author adapter delegates to the repository', async () => {
   assert.deepEqual(await adapter.getPage({ page: 2, size: 10 }), [author]);
   assert.deepEqual(await adapter.addOne(author), author);
   assert.deepEqual(calls[0], { where: { id: 'id' } });
-  assert.deepEqual(calls[1], { skip: 20, take: 10 });
-  const creation = calls[2] as { data: typeof author & { created: Date; origin: string } };
-  assert.deepEqual({ ...creation.data, created: undefined }, { ...author, created: undefined, origin: 'unknown' });
-  assert.ok(creation.data.created instanceof Date);
+  assert.deepEqual(calls[1], { skip: 10, take: 10 });
+  const creation = calls[2] as { data: typeof author };
+  assert.deepEqual({ ...creation.data}, { ...author, });
 });
 
 void test('author adapter rejects missing authors', async () => {

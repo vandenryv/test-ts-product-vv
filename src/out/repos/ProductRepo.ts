@@ -16,7 +16,7 @@ export default class ProductRepo {
 
   async getPage(pageable: Pageable): Promise<ProductWithReviews[]> {
     return this.prisma.product.findMany({
-      skip: pageable.page * pageable.size,
+      skip: (pageable.page - 1)  * pageable.size,
       take: pageable.size,
       include: { reviews: { include: { author: true } } },
     });

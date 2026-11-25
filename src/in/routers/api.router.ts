@@ -1,8 +1,8 @@
 import { Router } from 'express';
 
 import type { AuthorAdapterInPort } from '#src/domain/port/in/AuthorAdapterInPort.ts';
-import type ProductAdapterInPort from '#src/domain/port/in/ProductAdapterInPort.ts';
-import type ReviewAdapterInPort from '#src/domain/port/in/ReviewAdapterInPort.ts';
+import type { ProductAdapterInPort } from '#src/domain/port/in/ProductAdapterInPort.ts';
+import type { ReviewAdapterInPort } from '#src/domain/port/in/ReviewAdapterInPort.ts';
 
 import { routerFactory as authorRouter } from './author.router.ts';
 import { routerFactory as productRouter } from './product.router.ts';

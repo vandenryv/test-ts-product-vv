@@ -16,7 +16,7 @@ export default class AuthorRepo {
 
   async getPage(pageable: Pageable): Promise<StoredAuthor[]> {
     return this.prisma.author.findMany({
-      skip: pageable.page * pageable.size,
+      skip: (pageable.page - 1) * pageable.size,
       take: pageable.size,
     });
   }

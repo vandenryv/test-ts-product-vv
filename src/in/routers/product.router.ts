@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { PageableSchema, tryParsePageable } from '#src/common/classes/Pageable.ts';
 import HttpStatusCodes from '#src/common/constants/HttpStatusCodes.ts';
-import type ProductAdapterInPort from '#src/domain/port/in/ProductAdapterInPort.ts';
+import type { ProductAdapterInPort } from '#src/domain/port/in/ProductAdapterInPort.ts';
 import { idSchema, queryStringExtractor } from '#src/in/routers/util.ts';
 
 export const basePath = '/products';

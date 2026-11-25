@@ -4,17 +4,17 @@ export const PageableSchema = z.object({
   page: z
     .number()
     .int()
-    .nonnegative(),
+    .positive(),
   size: z
     .number()
     .int()
-    .nonnegative(),
+    .positive(),
 });
 
 export type Pageable = z.infer<typeof PageableSchema>;
 
 export const DEFAULT_PAGE_SIZE = 10;
-export const DEFAULT_PAGE = 0;
+export const DEFAULT_PAGE = 1;
 
 export type PossiblePageableValue = string | number | undefined;
 

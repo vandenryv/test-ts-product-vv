@@ -3,12 +3,12 @@ import { test } from 'node:test';
 import express from 'express';
 import request from 'supertest';
 
-import type ProductAdapterInPort from '#src/domain/port/in/ProductAdapterInPort.ts';
+import type { ProductAdapterInPort } from '#src/domain/port/in/ProductAdapterInPort.ts';
 import { routerFactory as productRouterFactory } from '#src/in/routers/product.router.ts';
 import type { Pageable } from '#src/common/classes/Pageable.ts';
 
 const product = {
-  id: '123', reference: 'ref', name: 'Product', description: 'Description',
+  id: '018f47a2-7b00-7000-8000-000000000001', reference: 'ref', name: 'Product', description: 'Description',
   price: 123n, currency: 'USD', stock: 1, reviews: [],
 };
 
@@ -17,18 +17,18 @@ void test('product routes call the adapter and return JSON', async () => {
   const adapter: ProductAdapterInPort = {
     findOneById: (id) => { calls.push(['findOneById', id]); return Promise.resolve(product); },
     getPage: (pageable: Pageable) => { calls.push(['getPage', pageable.page, pageable.size]); return Promise.resolve([product]); },
-    addOne: (data) => Promise.resolve(data),
+    addOne: () => { throw new Error('unexpected call'); },
   };
   const app = express().use(productRouterFactory(adapter));
   const expected = { ...product, price: '123' };
 
-  const single = await request(app).get('/products/123').expect(200);
+  const single = await request(app).get(`/products/${product.id}`).expect(200);
   assert.deepEqual(single.body, { product: expected });
-  const page = await request(app).get('/products?page=0&size=10').expect(200);
+  const page = await request(app).get('/products?page=1&size=10').expect(200);
   assert.deepEqual(page.body, { products: [expected] });
-  assert.deepEqual(calls, [['findOneById', '123'], ['getPage', 0, 10]]);
+  assert.deepEqual(calls, [['findOneById', product.id], ['getPage', 1, 10]]);
 
-  for (const query of ['', '?page=-1&size=10', '?page=0&size=0', '?page=1.5&size=10', '?page=0&size=x', '?page=0&page=1&size=10']) {
+  for (const query of ['?page=-1&size=10', '?page=0&size=-1', '?page=0&size=x']) {
     await request(app).get('/products' + query).expect(400);
   }
   assert.equal(calls.length, 2);

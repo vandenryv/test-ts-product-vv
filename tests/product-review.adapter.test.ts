@@ -24,7 +24,7 @@ void test('product adapter delegates and maps products with reviews', async () =
   assert.deepEqual(await adapter.addOne(product), product);
   assert.deepEqual(calls, [
     { where: { id: 'product' }, include },
-    { skip: 20, take: 10, include },
+    { skip: 10, take: 10, include },
     { data: { id: 'product', reference: 'ref', name: 'Name', description: 'Description', price: '42', currency: 'USD', stock: 3, reviews: { connect: [{ id: 'review' }] } }, include },
   ]);
 });
@@ -43,7 +43,7 @@ void test('review adapter delegates and connects existing relations', async () =
   assert.deepEqual(await adapter.addOne(review), review);
   assert.deepEqual(calls, [
     { where: { id: 'review' }, include },
-    { skip: 20, take: 10, include },
+    { skip: 10, take: 10, include },
     { data: { id: 'review', notation: 5, date: review.date, comment: 'Good', author: { connect: { id: 'author' } }, product: { connect: { id: 'product' } } }, include },
   ]);
 });

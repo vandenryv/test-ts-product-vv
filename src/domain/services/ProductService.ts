@@ -1,7 +1,7 @@
 import type { Pageable } from '#src/common/classes/Pageable.ts';
-import type ProductAdapterInPort from '#src/domain/port/in/ProductAdapterInPort.ts';
+import type { ProductAdapterInPort } from '#src/domain/port/in/ProductAdapterInPort.ts';
 import type { Product, ProductToAdd } from '#src/domain/models/Product.ts';
-import type ProductAdapterOutPort from '#src/domain/port/out/ProductAdapterOutPort.ts';
+import type { ProductAdapterOutPort } from '#src/domain/port/out/ProductAdapterOutPort.ts';
 
 export class ProductService implements ProductAdapterInPort {
   productRepo: ProductAdapterOutPort;

@@ -2,8 +2,8 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import express from 'express';
 import request from 'supertest';
-import type ProductAdapterInPort from '#src/domain/port/in/ProductAdapterInPort.ts';
-import type ReviewAdapterInPort from '#src/domain/port/in/ReviewAdapterInPort.ts';
+import type { ProductAdapterInPort } from '#src/domain/port/in/ProductAdapterInPort.ts';
+import type { ReviewAdapterInPort } from '#src/domain/port/in/ReviewAdapterInPort.ts';
 import { routerFactory as productRouter } from '#src/in/routers/product.router.ts';
 import { routerFactory as reviewRouter } from '#src/in/routers/review.router.ts';
 

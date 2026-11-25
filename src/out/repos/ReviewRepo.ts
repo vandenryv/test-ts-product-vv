@@ -16,7 +16,7 @@ export default class ReviewRepo {
 
   getPage(pageable: Pageable): Promise<ReviewWithAuthor[]> {
     return this.prisma.review.findMany({
-      skip: pageable.page * pageable.size,
+      skip: (pageable.page - 1)  * pageable.size,
       take: pageable.size,
       include: { author: true },
     });
