@@ -6,7 +6,6 @@
     "install:clean": "node -e \"fs.rmSync('node_modules', { recursive: true, force: true }); fs.rmSync('package-lock.json', { force: true })\" && npm i",
     "dev": "node --env-file=config/.env.development --watch src/main.ts",
     "lint": "eslint .",
-    "format": "prettier --write .",
     "start": "node --env-file-if-exists=config/.env.production src/main.ts",
     "test": "node --env-file=config/.env.test --test --test-concurrency=1",
     "typecheck": "tsc -b --noEmit",
@@ -31,7 +30,6 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "@trivago/prettier-plugin-sort-imports": "^6.0.2",
     "@types/connect-livereload": "^0.6.3",
     "@types/express": "^5.0.6",
     "@types/livereload": "^0.9.5",
@@ -44,7 +42,6 @@
     "eslint-plugin-n": "^18.4.1",
     "jiti": "^2.7.0",
     "livereload": "^0.10.3",
-    "prettier": "^3.9.10",
     "prisma": "^7.10.1",
     "supertest": "^7.3.1",
     "tsx": "^4.23.15",

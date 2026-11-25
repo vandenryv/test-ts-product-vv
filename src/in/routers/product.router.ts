@@ -4,14 +4,6 @@ import HttpStatusCodes from '#src/common/constants/HttpStatusCodes.ts';
 import type ProductAdapterInPort from '#src/domain/port/in/ProductAdapterInPort.ts';
 import { queryStringExtractor } from '#src/in/routers/util.ts';
 
-
-
-
-
-
-
-
-
 export const basePath = '/products';
 
 export function routerFactory(productAdapter: ProductAdapterInPort): Router {
