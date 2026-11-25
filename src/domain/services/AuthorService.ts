@@ -1,5 +1,4 @@
 import type { Pageable } from '#src/common/classes/Pageable.ts';
-import { NotFoundError } from '#src/common/classes/route-errors.ts';
 import type { AuthorAdapterInPort } from '#src/domain/port/in/AuthorAdapterInPort.ts';
 import type { Author } from '#src/domain/types/Author.ts';
 

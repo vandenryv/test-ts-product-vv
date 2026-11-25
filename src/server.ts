@@ -1,5 +1,5 @@
 import { PrismaPg } from '@prisma/adapter-pg';
-import express, { type NextFunction, type Request, type Response, Router } from 'express';
+import express, { type NextFunction, type Request, type Response} from 'express';
 import helmet from 'helmet';
 import logger from 'jet-logger';
 import morgan from 'morgan';
@@ -33,6 +33,7 @@ if (Env.NODE_ENV === NodeEnvs.PRODUCTION) {
   app.use(helmet());
 }
 
+// eslint-disable-next-line no-process-env
 const connectionString = process.env.DATABASE_URL;
 if (!connectionString) throw new Error('DATABASE_URL is required');
 

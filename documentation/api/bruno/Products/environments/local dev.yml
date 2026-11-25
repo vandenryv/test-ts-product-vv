@@ -1,0 +1,5 @@
+name: local dev
+variables:
+  - name: host
+    value: http://localhost:3000
+    description: ""

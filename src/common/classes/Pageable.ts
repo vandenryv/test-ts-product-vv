@@ -1,4 +1,4 @@
-import { size, z } from 'zod';
+import { z } from 'zod';
 
 export const PageableSchema = z.object({
   page: z

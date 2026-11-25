@@ -5,7 +5,6 @@ import request from 'supertest';
 
 import type ProductAdapterInPort from '#src/domain/port/in/ProductAdapterInPort.ts';
 import { routerFactory as productRouterFactory } from '#src/in/routers/product.router.ts';
-import { size } from 'zod';
 import type { Pageable } from '#src/common/classes/Pageable.ts';
 
 const product = {

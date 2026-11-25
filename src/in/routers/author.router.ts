@@ -1,26 +1,8 @@
 import { Router } from 'express';
-import { type } from 'node:os';
 import { PageableSchema, tryParsePageable } from '#src/common/classes/Pageable.ts';
 import HttpStatusCodes from '#src/common/constants/HttpStatusCodes.ts';
 import type { AuthorAdapterInPort } from '#src/domain/port/in/AuthorAdapterInPort.ts';
 import { queryStringExtractor } from '#src/in/routers/util.ts';
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 export const basePath = '/authors';
 
