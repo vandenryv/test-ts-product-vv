@@ -10,16 +10,12 @@ void test('author adapter delegates to the repository', async () => {
   const prisma = { author: {
     findUnique: (args: unknown) => { calls.push(args); return Promise.resolve(author); },
     findMany: (args: unknown) => { calls.push(args); return Promise.resolve([author]); },
-    create: (args: unknown) => { calls.push(args); return Promise.resolve(author); },
   } } as unknown as PrismaClient;
   const adapter = new AuthorAdapter(prisma);
 
   assert.deepEqual(await adapter.findOneById('id'), author);
   assert.deepEqual(await adapter.getPage({ page: 2, size: 10 }), [author]);
-  assert.deepEqual(calls[0], { where: { id: 'id' } });
-  assert.deepEqual(calls[1], { skip: 10, take: 10 });
-  const creation = calls[2] as { data: typeof author };
-  assert.deepEqual({ ...creation.data}, { ...author, });
+  assert.deepEqual(calls, [{ where: { id: 'id' } }, { skip: 10, take: 10 }]);
 });
 
 void test('author adapter rejects missing authors', async () => {

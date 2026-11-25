@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import express from 'express';
 import request from 'supertest';
+import { Decimal } from 'decimal.js';
 import type { ProductAdapterInPort } from '#src/domain/port/in/ProductAdapterInPort.ts';
 import type { ReviewAdapterInPort } from '#src/domain/port/in/ReviewAdapterInPort.ts';
 import { routerFactory as productRouter } from '#src/in/routers/product.router.ts';
@@ -10,17 +11,19 @@ import { routerFactory as reviewRouter } from '#src/in/routers/review.router.ts'
 void test('product and review IDs must be UUIDv7 strings', async () => {
   const calls: string[] = [];
   const author = { id: 'a', firstName: 'A', lastName: 'B', type: 'user' };
-  const product = { id: 'p', reference: 'ref', name: 'Product', description: 'Description', price: 123n, currency: 'USD', stock: 1, reviews: [] };
+  const product = { id: 'p', reference: 'ref', name: 'Product', description: 'Description', price: new Decimal('123'), currency: 'USD', stock: 1, reviews: [] };
   const review = { id: 'r', notation: 5, date: new Date('2020-01-01'), comment: 'Good', productId: 'p', authorId: 'a', author };
   const products: ProductAdapterInPort = {
     findOneById: (id) => { calls.push(id); return Promise.resolve(product); },
     getPage: () => Promise.resolve([]),
     addOne: () => { throw new Error('unexpected call'); },
+    getTotalNumberOfProducts: () => { throw new Error('unexpected call'); },
+    getMostAppreciatedProducts:  () => { throw new Error('unexpected call'); },
+    getProductWithLowestRating: () => { throw new Error('unexpected call'); },
   };
   const reviews: ReviewAdapterInPort = {
     findOneById: (id) => { calls.push(id); return Promise.resolve(review); },
     getPage: () => Promise.resolve([]),
-    addOne: () => { throw new Error('unexpected call'); },
   };
   const app = express().use(productRouter(products)).use(reviewRouter(reviews));
   const validId = '018f47a2-7b00-7000-8000-000000000001';

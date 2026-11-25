@@ -13,11 +13,13 @@ void test('product and review pagination matches author pagination', async () =>
     getPage: (pageable) => { calls.push(pageable); return Promise.resolve([]); },
     findOneById: () => { throw new Error('unexpected call'); },
     addOne: () => { throw new Error('unexpected call'); },
+    getTotalNumberOfProducts: () => { throw new Error('unexpected call'); },
+    getMostAppreciatedProducts:  () => { throw new Error('unexpected call'); },
+    getProductWithLowestRating: () => { throw new Error('unexpected call'); },
   };
   const reviews: ReviewAdapterInPort = {
     getPage: (pageable) => { calls.push(pageable); return Promise.resolve([]); },
     findOneById: () => { throw new Error('unexpected call'); },
-    addOne: () => { throw new Error('unexpected call'); },
   };
   const app = express().use(productRouter(products)).use(reviewRouter(reviews));
 

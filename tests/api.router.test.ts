@@ -2,11 +2,13 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import express from 'express';
 import request from 'supertest';
+import { Decimal } from 'decimal.js';
 
 import type { AuthorAdapterInPort } from '#src/domain/port/in/AuthorAdapterInPort.ts';
 import type { ProductAdapterInPort } from '#src/domain/port/in/ProductAdapterInPort.ts';
 import type { ReviewAdapterInPort } from '#src/domain/port/in/ReviewAdapterInPort.ts';
 import apiRouter from '#src/in/routers/api.router.ts';
+import type { Product } from '#src/domain/models/Product.ts';
 
 void test('API routes delegate to their respective adapters', async () => {
   const authorId = '018f47a2-7b00-7000-8000-000000000001';
@@ -14,31 +16,32 @@ void test('API routes delegate to their respective adapters', async () => {
   const productId = '018f47a2-7b00-7000-8000-000000000003';
   const author = { id: authorId, firstName: 'A', lastName: 'B', type: 'user' };
   const review = { id: reviewId, notation: 5, date: new Date('2020-01-01'), comment: 'Good', productId, authorId, author };
-  const product = { id: productId, reference: 'ref', name: 'Product', description: 'Description', price: 123n, currency: 'USD', stock: 1, reviews: [] };
+  const product = { id: productId, reference: 'ref', name: 'Product', description: 'Description', price: new Decimal('123'), currency: 'USD', stock: 1, reviews: [] };
   const calls: unknown[][] = [];
 
 
   const authors: AuthorAdapterInPort = {
     findOneById: (id) => { calls.push(['author', id]); return Promise.resolve(author); },
     getPage: (pageable) => { calls.push(['authors', pageable]); return Promise.resolve([author]); },
-    addOne: () => { throw new Error('unexpected call'); },
   };
   const reviews: ReviewAdapterInPort = {
     findOneById: (id) => { calls.push(['review', id]); return Promise.resolve(review); },
     getPage: (pageable) => { calls.push(['reviews', pageable]); return Promise.resolve([review]); },
-    addOne: () => { throw new Error('unexpected call'); },
   };
   const products: ProductAdapterInPort = {
     findOneById: (id) => { calls.push(['product', id]); return Promise.resolve(product); },
     getPage: (pageable) => { calls.push(['products', pageable]); return Promise.resolve([product]); },
     addOne: () => { throw new Error('unexpected call'); },
+    getTotalNumberOfProducts: () => { throw new Error('unexpected call'); },
+    getMostAppreciatedProducts: () => { throw new Error('unexpected call'); },
+    getProductWithLowestRating: () => { throw new Error('unexpected call'); },
   };
 
   const app = express().use(apiRouter(products, authors, reviews));
 
   assert.deepEqual((await request(app).get(`/authors/${authorId}`).expect(200)).body, { author });
-  assert.deepEqual((await request(app).get(`/reviews/${reviewId}`).expect(200)).body, { review: { ...review, date: review.date.toISOString() } });
-  assert.deepEqual((await request(app).get(`/products/${productId}`).expect(200)).body, { product: { ...product, price: '123' } });
+  assert.deepEqual((await request(app).get(`/reviews/${reviewId}`).expect(200)).body, { ...review, date: review.date.toISOString() });
+  assert.deepEqual((await request(app).get(`/products/${productId}`).expect(200)).body, { ...product, price: '123' });
 
   await request(app).get('/authors?page=invalid').expect(400);
   await request(app).get('/reviews?size=invalid').expect(400);
@@ -47,7 +50,7 @@ void test('API routes delegate to their respective adapters', async () => {
 
   const pageable = { page: 1, size: 10 };
   assert.deepEqual((await request(app).get('/authors?page=1&size=10').expect(200)).body, { result: { values: [author], pageable } });
-  assert.deepEqual((await request(app).get('/reviews?page=1&size=10').expect(200)).body, { reviews: [{ ...review, date: review.date.toISOString() }] });
-  assert.deepEqual((await request(app).get('/products?page=1&size=10').expect(200)).body, { products: [{ ...product, price: '123' }] });
+  assert.deepEqual((await request(app).get('/reviews?page=1&size=10').expect(200)).body, [{ ...review, date: review.date.toISOString() }]);
+  assert.deepEqual((await request(app).get('/products?page=1&size=10').expect(200)).body, [{ ...product, price: '123' }]);
   assert.deepEqual(calls.slice(3), [['authors', pageable], ['reviews', pageable], ['products', pageable]]);
 });

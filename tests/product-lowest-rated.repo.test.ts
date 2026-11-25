@@ -18,7 +18,7 @@ void test('lowest rated products are returned in average rating order', async ()
     } },
   } as unknown as PrismaClient;
 
-  const products = await new ProductRepo(prisma).findLowestRated();
+  const products = await new ProductRepo(prisma).findLowestRated(5);
 
   assert.deepEqual(groupByArgs, {
     by: ['productId'], _avg: { notation: true },
@@ -37,5 +37,23 @@ void test('lowest rated products are empty when there are no reviews', async () 
     product: { findMany: () => Promise.resolve([]) },
   } as unknown as PrismaClient;
 
-  assert.deepEqual(await new ProductRepo(prisma).findLowestRated(), []);
+  assert.deepEqual(await new ProductRepo(prisma).findLowestRated(5), []);
+});
+
+void test('lowest rated products respect an explicit limit', async () => {
+  let groupByArgs: unknown;
+  const prisma = {
+    review: { groupBy: (args: unknown) => {
+      groupByArgs = args;
+      return Promise.resolve([]);
+    } },
+    product: { findMany: () => Promise.resolve([]) },
+  } as unknown as PrismaClient;
+
+  await new ProductRepo(prisma).findLowestRated(2);
+
+  assert.deepEqual(groupByArgs, {
+    by: ['productId'], _avg: { notation: true },
+    orderBy: [{ _avg: { notation: 'asc' } }, { productId: 'asc' }], take: 2,
+  });
 });
