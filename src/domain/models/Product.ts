@@ -1,11 +1,12 @@
 import type { Review, ReviewToAdd } from './Review.ts';
+import { Decimal } from 'decimal.js';
 
 export interface Product {
   id: string;
   reference: string;
   name: string;
   description: string;
-  price: bigint;
+  price: Decimal;
   currency: string;
   stock: number;
   reviews: Review[];

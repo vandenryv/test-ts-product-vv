@@ -25,4 +25,9 @@ export default class ProductRepo {
   async addOne(data: Prisma.ProductCreateInput): Promise<ProductWithReviews> {
     return this.prisma.product.create({ data, include: { reviews: { include: { author: true } } } });
   }
+
+  async findOneByReference(reference: string): Promise<ProductWithReviews | null> {
+    return this.prisma.product.findUnique({ where: { reference }, include: { reviews: { include: { author: true } } } });
+  }
+
 }

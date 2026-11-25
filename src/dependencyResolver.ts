@@ -8,12 +8,13 @@ import buildApiRouter from '#src/in/routers/api.router.ts';
 import { AuthorAdapter } from '#src/out/adapters/AuthorAdapter.ts';
 import { ProductAdapter } from '#src/out/adapters/ProductAdapter.ts';
 import { ReviewAdapter } from '#src/out/adapters/ReviewAdapter.ts';
+import { DataIntegrationFromFile } from '#src/in/dataIntegrationFromFile.ts';
 
 /**
  * Build the dependencyTree, allowing dependency injection
  * @param prismaClient
  */
-export function buildBaseRouter(prismaClient: PrismaClient): Router {
+export function buildDependencyTree(prismaClient: PrismaClient): TreeRoots {
 
   //Out
   const productAdapter = new ProductAdapter(prismaClient);
@@ -26,5 +27,14 @@ export function buildBaseRouter(prismaClient: PrismaClient): Router {
   const authorService = new AuthorService(authorAdapter);
 
   //In
-  return buildApiRouter(productService, authorService, reviewService);
+  return {
+    router: buildApiRouter(productService, authorService, reviewService),
+    fileIntegration: new DataIntegrationFromFile(productService)
+  }
+
+}
+
+type TreeRoots = {
+  router: Router,
+  fileIntegration: DataIntegrationFromFile
 }

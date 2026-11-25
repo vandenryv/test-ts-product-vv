@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Debug Server" type="NodeJSConfigurationType" path-to-js-file="$PROJECT_DIR$/src/main.ts" working-dir="$PROJECT_DIR$" node-parameters="--import jiti/register --env-file=config/.env.development">
+  <configuration default="false" name="Debug Server" type="NodeJSConfigurationType" node-parameters="--import jiti/register --env-file=config/.env.development" path-to-js-file="src/main.ts" working-dir="$PROJECT_DIR$">
     <method v="2" />
   </configuration>
 </component>

@@ -6,7 +6,7 @@ import morgan from 'morgan';
 
 import { RouteError } from '#src/common/classes/route-errors.ts';
 import HttpStatusCodes from '#src/common/constants/HttpStatusCodes.ts';
-import { buildBaseRouter } from '#src/dependencyResolver.ts';
+import { buildDependencyTree } from '#src/dependencyResolver.ts';
 import { PrismaClient } from '#src/generated/prisma/client.ts';
 
 import { Env, NodeEnvs } from './common/constants/env.constants.ts';
@@ -41,8 +41,14 @@ const prismaClient = new PrismaClient({
   adapter: new PrismaPg({ connectionString }),
 });
 
+const {
+  router, fileIntegration
+} = buildDependencyTree(prismaClient);
+
+await fileIntegration.integrateFiles();
+
 // Add APIs, must be after middleware
-app.use('/', buildBaseRouter(prismaClient));
+app.use('/', router);
 
 // Add error handler. `_next` must stay: Express only treats 4-arg middleware
 // as an error handler.
