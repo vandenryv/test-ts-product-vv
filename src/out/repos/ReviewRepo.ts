@@ -19,6 +19,7 @@ export default class ReviewRepo {
       skip: (pageable.page - 1)  * pageable.size,
       take: pageable.size,
       include: { author: true },
+      orderBy: { id: 'asc' }
     });
   }
 

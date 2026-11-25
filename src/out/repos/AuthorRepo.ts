@@ -18,6 +18,7 @@ export default class AuthorRepo {
     return this.prisma.author.findMany({
       skip: (pageable.page - 1) * pageable.size,
       take: pageable.size,
+      orderBy: { id: 'asc' }
     });
   }
 }

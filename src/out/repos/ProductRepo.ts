@@ -20,7 +20,8 @@ export default class ProductRepo {
   async getPage(pageable: Pageable): Promise<ProductBare[]> {
     return this.prisma.product.findMany({
       skip: (pageable.page - 1)  * pageable.size,
-      take: pageable.size
+      take: pageable.size,
+      orderBy: { id: 'asc' }
     });
   }
 
