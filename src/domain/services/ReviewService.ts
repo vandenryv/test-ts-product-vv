@@ -1,12 +1,13 @@
 import type { Pageable } from '#src/common/classes/Pageable.ts';
 import type ReviewAdapterInPort from '#src/domain/port/in/ReviewAdapterInPort.ts';
 import type { Review, ReviewToAdd } from '#src/domain/models/Review.ts';
+import type ReviewAdapterOutPort from '#src/domain/port/out/ReviewAdapterOutPort.ts';
 
 export class ReviewService implements ReviewAdapterInPort {
-  reviewRepo: ReviewAdapterInPort;
+  reviewRepo: ReviewAdapterOutPort;
 
-  constructor(reviewAdapterPortOut: ReviewAdapterInPort) {
-    this.reviewRepo = reviewAdapterPortOut;
+  constructor(reviewPortOut: ReviewAdapterOutPort) {
+    this.reviewRepo = reviewPortOut;
   }
 
   addOne(review: ReviewToAdd): Promise<Review> {

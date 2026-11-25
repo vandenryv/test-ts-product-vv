@@ -6,8 +6,8 @@ export class AuthorService implements AuthorAdapterInPort{
 
   authorRepo: AuthorAdapterInPort;
 
-  constructor(authorAdapterPortOut: AuthorAdapterInPort) {
-    this.authorRepo = authorAdapterPortOut;
+  constructor(authorPortOut: AuthorAdapterInPort) {
+    this.authorRepo = authorPortOut;
   }
 
   addOne(author: AuthorToAdd): Promise<Author> {
