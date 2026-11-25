@@ -5,7 +5,11 @@ info:
 
 http:
   method: GET
-  url: "{{host}}/reviews/123"
+  url: "{{host}}/reviews/:id"
+  params:
+    - name: id
+      value: 01a21334-eaaf-73c8-a0d3-fe1789c7a813
+      type: path
 
 settings:
   encodeUrl: true

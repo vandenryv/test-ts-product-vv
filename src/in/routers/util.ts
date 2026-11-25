@@ -1,3 +1,5 @@
+import { z } from 'zod';
+
 export function queryStringExtractor(queryString: unknown): string | undefined {
   if (typeof queryString === 'string') return queryString;
   if (
@@ -8,3 +10,5 @@ export function queryStringExtractor(queryString: unknown): string | undefined {
     return queryString[0];
   return undefined;
 }
+
+export const idSchema = z.uuidv7()
